@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home | Think Mart</title>
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="Home-Page.html">
+        <span class="brand-mark">TM</span>
+        Think Mart
+      </a>
+
+      <button class="menu-toggle" aria-label="Toggle menu" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="Home-Page.html" class="active">Home</a>
+        <a href="Products.html">Products</a>
+        <a href="Cart.html">Cart</a>
+        <a href="About.html">About</a>
+        <a href="Contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a class="cart-chip" href="Cart.html">Cart <span>3</span></a>
+        <a class="btn btn-secondary btn-sm" href="index.html">Login</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="container hero">
+      <div class="hero-copy">
+        <span class="eyebrow">Everyday essentials, elevated</span>
+        <p class="brand-hero">Think Mart</p>
+        <h1>Tech & lifestyle picks that just make sense.</h1>
+        <p>Discover laptops, mobiles, watches, and accessories with honest prices, clear discounts, and delivery you can count on.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="Products.html">Shop Products</a>
+          <a class="btn btn-outline" href="About.html">Our Story</a>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-float one">
+          <strong>Up to 40% off</strong>
+          <span>Weekend flash deals</span>
+        </div>
+        <div class="hero-float two">
+          <strong>Same-day dispatch</strong>
+          <span>On orders before 2 PM</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="section-head">
+        <h2>Shop by category</h2>
+        <p>Browse the collections shoppers love most this season.</p>
+      </div>
+
+      <div class="category-strip">
+        <a class="category-card" href="Products.html">
+          <div class="category-icon">L</div>
+          <h3>Laptops</h3>
+          <p>Work &amp; create</p>
+        </a>
+        <a class="category-card" href="Products.html">
+          <div class="category-icon">M</div>
+          <h3>Mobiles</h3>
+          <p>Stay connected</p>
+        </a>
+        <a class="category-card" href="Products.html">
+          <div class="category-icon">W</div>
+          <h3>Watches</h3>
+          <p>Style on time</p>
+        </a>
+        <a class="category-card" href="Products.html">
+          <div class="category-icon">A</div>
+          <h3>Accessories</h3>
+          <p>Finish the look</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="container page" style="padding-top:0;">
+      <div class="section-head">
+        <h2>Featured picks</h2>
+        <p>Hand-picked bestsellers with standout value.</p>
+      </div>
+
+      <div class="featured-grid">
+        <article class="product-card">
+          <div class="product-media">
+            <span class="badge-discount">-18%</span>
+            <span class="emoji-fallback" aria-hidden="true">💻</span>
+          </div>
+          <div class="product-body">
+            <span class="product-cat">Laptops</span>
+            <h3>NovaBook Air 14</h3>
+            <div class="rating"><span class="stars">★★★★★</span> 4.8</div>
+            <div class="price-row">
+              <span class="price">₹54,999</span>
+              <span class="price-old">₹66,999</span>
+            </div>
+            <a class="btn btn-primary btn-sm" href="Cart.html">Add to Cart</a>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-media">
+            <span class="badge-discount">-12%</span>
+            <span class="emoji-fallback" aria-hidden="true">📱</span>
+          </div>
+          <div class="product-body">
+            <span class="product-cat">Mobiles</span>
+            <h3>Pulse X Pro 5G</h3>
+            <div class="rating"><span class="stars">★★★★☆</span> 4.6</div>
+            <div class="price-row">
+              <span class="price">₹32,490</span>
+              <span class="price-old">₹36,999</span>
+            </div>
+            <a class="btn btn-primary btn-sm" href="Cart.html">Add to Cart</a>
+          </div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-media">
+            <span class="badge-discount">-25%</span>
+            <span class="emoji-fallback" aria-hidden="true">⌚</span>
+          </div>
+          <div class="product-body">
+            <span class="product-cat">Watches</span>
+            <h3>Orbit SmartWatch S3</h3>
+            <div class="rating"><span class="stars">★★★★★</span> 4.9</div>
+            <div class="price-row">
+              <span class="price">₹6,799</span>
+              <span class="price-old">₹8,999</span>
+            </div>
+            <a class="btn btn-primary btn-sm" href="Cart.html">Add to Cart</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="Home-Page.html">
+          <span class="brand-mark">TM</span>
+          Think Mart
+        </a>
+        <p>A modern marketplace for tech and lifestyle essentials — designed for clarity, value, and trust.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <a href="Products.html">All Products</a>
+        <a href="Cart.html">Your Cart</a>
+        <a href="Home-Page.html">Deals</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="About.html">About Us</a>
+        <a href="Contact.html">Contact</a>
+        <a href="#">Careers</a>
+      </div>
+      <div>
+        <h4>Account</h4>
+        <a href="index.html">Login</a>
+        <a href="Register-Page.html">Register</a>
+        <a href="#">Help Center</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© 2026 Think Mart. All rights reserved.</span>
+      <span>Built with HTML &amp; CSS</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | Think Mart</title>
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+  <main class="auth-page">
+    <div class="auth-shell">
+      <section class="auth-visual">
+        <a class="brand" href="Home-Page.html">
+          <span class="brand-mark">TM</span>
+          Think Mart
+        </a>
+        <div>
+          <h1>Join the Think Mart family.</h1>
+          <p>Create your account and unlock member-only prices, faster checkout, and order tracking.</p>
+        </div>
+        <p style="opacity:0.7;font-size:0.9rem;">Free shipping on your first order over ₹999</p>
+      </section>
+
+      <section class="auth-form-wrap">
+        <h2>Create account</h2>
+        <p class="sub">It only takes a minute to get started.</p>
+
+        <form action="Home-Page.html" method="get">
+          <div class="form-group">
+            <label for="fullname">Full name</label>
+            <input type="text" id="fullname" name="fullname" placeholder="Prem Kumar" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone number</label>
+            <input type="tel" id="phone" name="phone" placeholder="+91 98765 43210" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Min. 8 characters" required minlength="8" />
+          </div>
+
+          <div class="form-group">
+            <label for="confirm">Confirm password</label>
+            <input type="password" id="confirm" name="confirm" placeholder="Re-enter password" required />
+          </div>
+
+          <div class="form-row">
+            <label><input type="checkbox" required /> I agree to Terms & Privacy</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+
+        <p class="auth-switch">
+          Already have an account?
+          <a href="index.html">Sign in</a>
+        </p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
