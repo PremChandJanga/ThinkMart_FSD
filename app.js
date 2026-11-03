@@ -45,7 +45,7 @@ function productCard(product) {
   const discount = Math.round((1 - product.price_cents / product.original_price_cents) * 100);
   const filledStars = Math.round(product.rating);
   const stars = '★'.repeat(filledStars) + '☆'.repeat(5 - filledStars);
-  return `<article class="product-card">
+  return `<article class="product-card" data-product-id="${escapeHtml(product.id)}" role="link" tabindex="0">
     <div class="product-media">
       <span class="badge-discount">-${discount}%</span>
       <img src="${escapeHtml(product.image_path)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" />
@@ -58,7 +58,6 @@ function productCard(product) {
         <span class="price">${currency.format(product.price_cents / 100)}</span>
         <span class="price-old">${currency.format(product.original_price_cents / 100)}</span>
       </div>
-      <button class="btn btn-primary btn-sm" type="button" data-add-to-cart="${escapeHtml(product.id)}">Add to Cart</button>
     </div>
   </article>`;
 }
@@ -89,6 +88,75 @@ function renderProductResults(grid, products) {
   grid.innerHTML = visible.length
     ? visible.map(productCard).join('')
     : '<div class="empty-state"><h3>No products found</h3><p>Try a different search or category.</p></div>';
+}
+
+function syncProductUrl() {
+  const params = new URLSearchParams();
+  const category = document.querySelector('.filter-btn.active')?.dataset.category || 'All';
+  const search = document.querySelector('[data-product-search]')?.value.trim() || '';
+  if (category !== 'All') params.set('category', category);
+  if (search) params.set('search', search);
+  const query = params.toString();
+  window.history.replaceState(null, '', `${window.location.pathname}${query ? `?${query}` : ''}`);
+}
+
+async function loadProductDetail() {
+  const detail = document.querySelector('[data-product-detail]');
+  if (!detail) return;
+
+  const productId = new URLSearchParams(window.location.search).get('id');
+  if (!productId) {
+    detail.innerHTML = '<div class="empty-state"><h2>Product not found</h2><a class="btn btn-primary" href="Products.html">Browse products</a></div>';
+    return;
+  }
+
+  try {
+    const { products } = await request('/api/products');
+    const product = products.find((item) => item.id === productId);
+    if (!product) {
+      detail.innerHTML = '<div class="empty-state"><h2>Product not found</h2><a class="btn btn-primary" href="Products.html">Browse products</a></div>';
+      return;
+    }
+
+    const discount = Math.round((1 - product.price_cents / product.original_price_cents) * 100);
+    const stars = '★'.repeat(Math.round(product.rating)) + '☆'.repeat(5 - Math.round(product.rating));
+    const sameCategory = products.filter((item) => item.id !== product.id && item.category === product.category);
+    const otherProducts = products.filter((item) => item.id !== product.id && item.category !== product.category);
+    const related = [...sameCategory, ...otherProducts].slice(0, 4);
+    detail.innerHTML = `<a class="product-detail-back" href="Products.html" data-go-back>← Go back</a>
+      <div class="product-detail-layout">
+        <div class="product-detail-media">
+          <span class="badge-discount">-${discount}%</span>
+          <img src="${escapeHtml(product.image_path)}" alt="${escapeHtml(product.name)}" />
+        </div>
+        <section class="product-detail-info" aria-labelledby="product-detail-title">
+          <span class="product-cat">${escapeHtml(product.category)}</span>
+          <h1 id="product-detail-title">${escapeHtml(product.name)}</h1>
+          <div class="rating"><span class="stars" aria-label="${product.rating} out of 5">${stars}</span> ${product.rating} (${product.review_count} reviews)</div>
+          <p class="product-detail-description">${escapeHtml(product.description)}</p>
+          <div class="product-detail-price"><span class="price">${currency.format(product.price_cents / 100)}</span>
+            <span class="price-old">${currency.format(product.original_price_cents / 100)}</span>
+          </div>
+          <p class="product-detail-note">Free delivery · Secure checkout</p>
+        </section>
+      </div>
+      <div class="product-detail-actions">
+        <span class="product-detail-action-price">${currency.format(product.price_cents / 100)}</span>
+        <div class="product-detail-action-buttons">
+          <button class="btn btn-secondary" type="button" data-detail-add="${escapeHtml(product.id)}">Add to cart</button>
+          <button class="btn btn-primary" type="button" data-buy-now="${escapeHtml(product.id)}">Buy now</button>
+        </div>
+      </div>
+      <section class="related-products" aria-labelledby="related-products-title">
+        <div class="section-head">
+          <h2 id="related-products-title">Related products</h2>
+          <p>More from ${escapeHtml(product.category)} and beyond.</p>
+        </div>
+        <div class="related-grid">${related.map(productCard).join('')}</div>
+      </section>`;
+  } catch (error) {
+    detail.innerHTML = `<div class="empty-state"><h2>Could not load this product</h2><p>${escapeHtml(error.message)}</p><a class="btn btn-primary" href="Products.html">Browse products</a></div>`;
+  }
 }
 
 async function loadCart() {
@@ -209,6 +277,20 @@ function wireForms() {
 }
 
 document.addEventListener('click', async (event) => {
+  const backLink = event.target.closest('[data-go-back]');
+  if (backLink && document.referrer.startsWith(window.location.origin)) {
+    event.preventDefault();
+    window.history.back();
+    return;
+  }
+
+  const productCard = event.target.closest('.product-card[data-product-id]');
+  if (productCard) {
+    event.preventDefault();
+    window.location.href = `Product-Details.html?id=${encodeURIComponent(productCard.dataset.productId)}`;
+    return;
+  }
+
   const addButton = event.target.closest('[data-add-to-cart]');
   if (addButton) {
     try {
@@ -220,6 +302,38 @@ document.addEventListener('click', async (event) => {
       notify('Added to your cart.');
     } catch (error) {
       notify(error.message, true);
+    }
+    return;
+  }
+
+  const detailAddButton = event.target.closest('[data-detail-add]');
+  if (detailAddButton) {
+    try {
+      await request('/api/cart/items', {
+        method: 'POST',
+        body: JSON.stringify({ productId: detailAddButton.dataset.detailAdd, quantity: 1 }),
+      });
+      await loadCart();
+      notify('Added to your cart.');
+    } catch (error) {
+      notify(error.message, true);
+    }
+    return;
+  }
+
+  const buyButton = event.target.closest('[data-buy-now]');
+  if (buyButton) {
+    try {
+      await request('/api/cart/items', {
+        method: 'POST',
+        body: JSON.stringify({ productId: buyButton.dataset.buyNow, quantity: 1 }),
+      });
+      const result = await request('/api/orders', { method: 'POST', body: '{}' });
+      await loadCart();
+      notify(`Order #${result.orderId} placed. Total ${currency.format(result.total_cents / 100)}.`);
+    } catch (error) {
+      if (error.message.includes('Sign in')) window.location.href = 'index.html';
+      else notify(error.message, true);
     }
     return;
   }
@@ -253,20 +367,37 @@ document.addEventListener('click', async (event) => {
   }
 });
 
-document.querySelectorAll('.filter-btn').forEach((button) => {
+const productFilters = [...document.querySelectorAll('.filter-btn')];
+const productParams = new URLSearchParams(window.location.search);
+const requestedCategory = productParams.get('category');
+const selectedFilter = productFilters.find((button) => button.textContent.trim() === requestedCategory)
+  || productFilters.find((button) => button.textContent.trim() === 'All');
+
+productFilters.forEach((button) => {
   button.dataset.category = button.textContent.trim();
+  button.classList.toggle('active', button === selectedFilter);
   button.addEventListener('click', () => {
     document.querySelector('.filter-btn.active')?.classList.remove('active');
     button.classList.add('active');
+    syncProductUrl();
     const grid = document.querySelector('.product-grid');
     if (grid?.dataset.allProducts) renderProductResults(grid, JSON.parse(grid.dataset.allProducts));
   });
 });
 
-document.querySelector('[data-product-search]')?.addEventListener('input', () => {
+const productSearch = document.querySelector('[data-product-search]');
+if (productSearch) productSearch.value = productParams.get('search') || '';
+
+productSearch?.addEventListener('input', () => {
+  syncProductUrl();
   const grid = document.querySelector('.product-grid');
   if (grid?.dataset.allProducts) renderProductResults(grid, JSON.parse(grid.dataset.allProducts));
 });
 
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter' || !event.target.matches('.product-card[data-product-id]')) return;
+  window.location.href = `Product-Details.html?id=${encodeURIComponent(event.target.dataset.productId)}`;
+});
+
 wireForms();
-refreshHeader().finally(() => Promise.all([loadProducts(), loadCart()]));
+refreshHeader().finally(() => Promise.all([loadProducts(), loadCart(), loadProductDetail()]));

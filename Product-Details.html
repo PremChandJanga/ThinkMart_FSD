@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Details | Think Mart</title>
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a class="brand" href="Home-Page.html">
+        <span class="brand-mark">TM</span>
+        Think Mart
+      </a>
+      <button class="menu-toggle" aria-label="Toggle menu" onclick="document.getElementById('navLinks').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-links" id="navLinks">
+        <a href="Home-Page.html">Home</a>
+        <a href="Products.html" class="active">Products</a>
+        <a href="Cart.html">Cart</a>
+        <a href="About.html">About</a>
+        <a href="Contact.html">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="cart-chip" href="Cart.html">Cart <span>0</span></a>
+        <a class="btn btn-secondary btn-sm" href="index.html">Login</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page product-detail-page">
+    <div class="container" data-product-detail aria-live="polite">
+      <div class="empty-state"><h2>Loading product...</h2></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-bottom">
+      <a href="Products.html">All products</a>
+      <span>© 2026 Think Mart. All rights reserved.</span>
+    </div>
+  </footer>
+  <script src="app.js" defer></script>
+</body>
+</html>

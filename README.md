@@ -1,18 +1,18 @@
 # Think Mart
 
-Think Mart is a small full-stack shopping demo. It uses plain HTML, CSS, and JavaScript in the browser, plus a Python 3.9+ standard-library HTTP server and a local SQLite database. No package installation is required.
+Think Mart is a small full-stack shopping demo. It uses plain HTML, CSS, and JavaScript in the browser, plus a Spring Boot backend and a local SQLite database.
 
 ## Run locally
 
-From this folder, run:
+Install JDK 17 or newer and Maven, then run this from the project folder:
 
-```powershell
-python server.py
+```sh
+mvn spring-boot:run
 ```
 
-Open http://127.0.0.1:8000. Stop the server with `Ctrl+C`. If `python` is not on your PATH, run the script with your installed Python interpreter.
+Open http://127.0.0.1:8000. Stop the server with `Ctrl+C`. Maven downloads the required dependencies on the first run.
 
-The server creates `.data/thinkmart.sqlite3` on first launch and seeds the product catalog. The database directory is ignored by Git. Delete that database file to reset local users, carts, messages, and orders; products are seeded again at next startup.
+The server creates `.data/thinkmart.sqlite3` on first launch and seeds the product catalog. The database directory is ignored by Git. Delete that database file to reset local users, carts, messages, and orders; products are seeded again at next startup. Existing SQLite data is retained, and existing accounts continue to use their current scrypt password hashes.
 
 ## Included flows
 
